@@ -40,23 +40,22 @@ npm run test:unit
 
 ### Run End-to-End Tests with [Playwright](https://playwright.dev)
 
-```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-npm run build
-
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
+##### unix
+```bash
+sudo docker run --rm --network host -v $(pwd)/:/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.44.1-jammy /bin/bash
 ```
 
+```shell
+docker run --rm --network host -v ${pwd}/:/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.44.1-jammy /bin/bash
+```
+
+```bash
+apt update \
+&& apt install build-essential -y --no-install-recommends \
+&& yarn \
+&& yarn build \
+&& xvfb-run yarn test:playwright 
+```
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
