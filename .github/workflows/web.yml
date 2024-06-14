@@ -62,7 +62,11 @@ jobs:
         with:
           name: code-coverage-report
           path: e2e/report/
-
+          retention-days: 30
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: code-coverage-report
 
   build:
     needs: [eslint, test, e2e]
