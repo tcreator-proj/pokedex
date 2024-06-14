@@ -2,6 +2,9 @@ name: pokedex
 
 on:
   push:
+    branches:
+      - master
+      - dev
   workflow_dispatch:
 
 permissions:
@@ -36,10 +39,22 @@ jobs:
           node-version: 20.11.0
           cache: 'yarn'
       - run: yarn
-      - run: yarn test
+      - run: yarn test:unit
+
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.0
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn test:e2e
 
   build:
-    needs: [eslint, test]
+    needs: [eslint, test, e2e]
 
     environment:
       name: github-pages
@@ -54,8 +69,6 @@ jobs:
           node-version: 20.11.0
           cache: 'yarn'
       - run: yarn
-      - run: yarn lint
-      - run: yarn test
       - run: yarn build
       - name: Setup Pages
         uses: actions/configure-pages@v4
